@@ -109,7 +109,11 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
 		$fields['edu_quest_graduate_title']=$dget["metatitlos"];
 
         	$stmt->execute();
-
+		$content = '<table><tr><td>ΙΔΡΥΜΑ</td><td>ΣΧΟΛΗ</td><td>ΜΑΘΗΜΑ</td><td>ΤΕΧΝΟΛΟΓΙΑ</td><td>URL</td><tr>';
+		$content .= "<tr><td>".$dget["idrima"];
+		$content .= "</td><td>";
+		$content .= $dget["sxolh"];
+		$content .= "</td>";
         	$lastid = $storage->lastInsertId();
 		if($data['eidikotita'] == 'didaktiko' || $data['eidikotita'] == 'fititis' || $data['eidikotita'] == 'ergastiriako'){
 			$g1 = 'INSERT INTO datamathima ( "id", "mathima", "ellak", "ellakurl" ) VALUES ( :lastid, :mathima, :ellak, :ellakurl)';
@@ -128,14 +132,24 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
 					}else{
 						$stmt1->bindValue(':mathima', $dget["ellak"][$i]["mathima"]);
 						$contentellakm = $dget["ellak"][$i]["mathima"];
+						$contentellakme = "<td>";
+						$contentellakme .= $dget["ellak"][$i]["mathima"];
++						$contentellakme .= "</td>";
 					}
 					if($dget["ellak"][$i]["tech"] != ''){
 						$stmt1->bindValue(':ellak', $dget["ellak"][$i]["tech"]);
 						$contentellakt = $dget["ellak"][$i]["tech"];
+						$contentellakte = "<td>";
+						$contentellakte .= $dget["ellak"][$i]["tech"];
+						$contentellakte .= "</td>";
 					}
 					elseif($dget["ellak"][$i]["url"] != ''){
 						$stmt1->bindValue(':ellakurl', $dget["ellak"][$i]["url"]);
 						$contentellaku = $dget["ellak"][$i]["url"];
+						$contentellakue = "<td>";
+						$contentellakue .= $dget["ellak"][$i]["url"];
+						$contentellakue .= "</td>";
+						$contentellakue .= "</tr>";
 					}
 				if($i == $ii){
 					$fields['edu_quest_course']= $contentellakm;
@@ -154,6 +168,15 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
 
 					$exec1 .= " 2>&1";
 					exec($exec1, $output1, $return_var1);
+
+					$content .= $contentellakme;
+ 					$content .= $contentellakte;
+ 					$content .= $contentellakue;
+					$content .= '<td></td><td></td>';
+ 					$contentellakme='';
+ 					$contentellakte='';
+ 					$contentellakue='';
+
 					$contentellakm='';
 					$contentellakt='';
 					$contentellaku='';
@@ -162,8 +185,8 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
 					$ii = $ii + 2;
 				}
 			}
-	$content = json_encode($fields);
-	$body = json_encode($fields);
+	$content .= '</table>';	
+	$body = $content;
 	$to = $dget["email"];
 	$from = $M_FROM;
 	$from_name = $M_NAME;
