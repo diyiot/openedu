@@ -1,3 +1,4 @@
 restapi/file.php
 web/indexconfig.php
 web/view/indexconfig.js
+db/sql.db

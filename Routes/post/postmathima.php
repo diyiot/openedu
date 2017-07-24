@@ -13,6 +13,7 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
                 $mail->SMTPDebug = 0; // debugging: 1 = errors and messages, 2 = messages only
                 $mail->Host = $M_HOST;
                 $mail->Port = $M_PORT;
+                $mail->SMTPAutoTLS = $M_STARTTLS; // if true phpmailer will try connect via STARTTLS
                 $mail->SetFrom($from, $from_name);
                 $mail->Subject = $subject;
                 $mail->Body = $body;

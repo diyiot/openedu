@@ -66,3 +66,8 @@ The root directory of the application files must be defined here.
 In this file 2 url must be defined. The "API" url which is located at url where
 the application itself runs and the link to the opendata file where the results
 of the questionnaire will be hosted.
+
+4. **cp db/sql.default.db db/sql.db**</br>
+This is the local database the application uses. In this file there is by
+default data about institutions, departments and lessons. The results of the
+questionnaire are also stored here.
