@@ -199,7 +199,7 @@ Email: ................... {$fields['edu_quest_applicant_email']}
 					$fields['edu_quest_software_url']= $contentellaku;
 
 					// Add to the email body the course, sotfware and the software_url, within the loop.
-					$body .= "\nΜάθημα: .................. {$fields['edu_quest_course']}\n";
+					$body .= "\nΜάθημα/Εργαστήριο: ....... {$fields['edu_quest_course']}\n";
 					$body .=   "Ανοιχτή Τεχνολογία: ...... {$fields['edu_quest_software']}\n";
 					$body .=   "Ιστοσελίδα Τεχνολογίας: .. {$fields['edu_quest_software_url']}\n";
 

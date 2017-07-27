@@ -107,10 +107,10 @@ $('#el-idrima').on('change', function () {
 });
 
 var tmimaselect = '<div class="eltimagroup">';
-tmimaselect +='<label class="bg-info control-label hidden-xs hidden-sm col-md-3 required" for="el-mathima">Μάθημα</label>';
+tmimaselect +='<label class="bg-info control-label hidden-xs hidden-sm col-md-3 required" for="el-mathima">Μάθημα/Εργαστήριο</label>';
 tmimaselect +='<div class="col-xs-12 col-sm-12 col-md-9">';
 tmimaselect +='<select class="form-control input-sm eltmima" data-placeholder="Τμήμα" required name="mathima">';
-tmimaselect +='<option selected=""  value="">Μάθημα</option>';
+tmimaselect +='<option selected=""  value="">Μάθημα/Εργαστήριο</option>';
 tmimaselect +='<option value="1"></option>';
 tmimaselect +='</select>';
 tmimaselect +='</div>';
@@ -143,9 +143,9 @@ tmimaselecturlmeta +='<label class="eltmimalessonurl metalessonlabel control-lab
 tmimaselecturlmeta +='<div class="eltmimalessonurldiv eltmimalessonurl metalessoninput col-xs-12 col-sm-12 col-md-9">';
 tmimaselecturlmeta +='<input class="form-control input-sm eltmimalesson eltmimalessonurl" value="" name="metatitlos" placeholder="Όνομα μεταπτυχιακού προγράματος" type="text" required>';
 tmimaselecturlmeta +='</div>';
-tmimaselecturlmeta +='<label class="eltmimalessonurl control-label hidden-xs hidden-sm col-md-3 required" for="el-metamathima">Μάθημα </label>';
+tmimaselecturlmeta +='<label class="eltmimalessonurl control-label hidden-xs hidden-sm col-md-3 required" for="el-metamathima">Μάθημα/Εργαστήριο</label>';
 tmimaselecturlmeta +='<div class="eltmimalessonurldiv eltmimalessonurl col-xs-12 col-sm-12 col-md-9">';
-tmimaselecturlmeta +='<input class="form-control input-sm eltmimalesson eltmimalessonurl" value="" name="metamathima" required placeholder="Μάθημα" type="text">';
+tmimaselecturlmeta +='<input class="form-control input-sm eltmimalesson eltmimalessonurl" value="" name="metamathima" required placeholder="Μάθημα/Εργαστήριο" type="text">';
 tmimaselecturlmeta +='</div>';
 
 tmimaselecturlmeta +='<label class="eltmimalessonurl control-label required hidden-xs hidden-sm col-md-3" for="el-metatechnologia">Ανοιχτή Τεχνολογία</label>';
@@ -161,9 +161,9 @@ tmimaselecturlmeta +='</div>';
 tmimaselecturlmeta +='</div>';
 
 
-tmimaselecturlmeta1 ='<div class="eltimagroupmeta1"><label class="eltmimalessonurl  control-label hidden-xs hidden-sm col-md-3 required" for="el-metamathima">Μάθημα</label>';
+tmimaselecturlmeta1 ='<div class="eltimagroupmeta1"><label class="eltmimalessonurl  control-label hidden-xs hidden-sm col-md-3 required" for="el-metamathima">Μάθημα/Εργαστήριο</label>';
 tmimaselecturlmeta1 +='<div class="eltmimalessonurldiv eltmimalessonurl col-xs-12 col-sm-12 col-md-9">';
-tmimaselecturlmeta1 +='<input class="form-control input-sm eltmimalesson eltmimalessonurl" value="" name="metamathima" placeholder="Μάθημα" required type="text">';
+tmimaselecturlmeta1 +='<input class="form-control input-sm eltmimalesson eltmimalessonurl" value="" name="metamathima" placeholder="Μάθημα/Εργαστήριο" required type="text">';
 tmimaselecturlmeta1 +='</div>';
 
 tmimaselecturlmeta1 +='<label class="eltmimalessonurl control-label required hidden-xs hidden-sm col-md-3" for="el-metatechnologia">Ανοιχτή Τεχνολογία</label>';
