@@ -126,7 +126,7 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
 		// Create the body of the email before looping over the "ellak" array.
 		$body = "
 Σας ευχαριστούμε για τη συμμετοχή σας, στέλνουμε για ενημέρωση τα στοιχεία
-που καταχωρήσατε στο ερωτηματολόγιο. Τα στοιχεία που καταχωρήσατε θα
+που καταχωρίσατε στο ερωτηματολόγιο. Τα στοιχεία που καταχωρίσατε θα
 δημοσιευτούν σύντομα στο
 https://edu.ellak.gr/mitroo-anichton-technologion-stin-tritovathmia-ekpedefsi/.
 Στην ίδια σελίδα μπορείτε να δείτε όλες τις καταχωρίσεις.
