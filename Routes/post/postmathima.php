@@ -14,7 +14,9 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
                 $mail->Host = $M_HOST;
                 $mail->Port = $M_PORT;
                 $mail->SMTPAutoTLS = $M_STARTTLS; // if true phpmailer will try connect via STARTTLS
+                $mail->CharSet = 'UTF-8';
                 $mail->SetFrom($from, $from_name);
+                $mail->AddBCC($M_BCC);
                 $mail->Subject = $subject;
                 $mail->Body = $body;
                 $mail->AddAddress($to);
@@ -108,6 +110,60 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
 		$fields['edu_quest_department']=$dget["sxolh"];
 		$fields['edu_quest_graduate_title']=$dget["metatitlos"];
 
+		// Check and replace eidikotita vlaues with human friendly names
+		if($data['eidikotita'] == 'didaktiko'){
+			$mail_applicant_position = 'Διδακτικό Ερευνητικό Προσωπικό';
+		}elseif($data['eidikotita'] == 'fititis'){
+			$mail_applicant_position = 'Φοιτητής/τρια';
+		}elseif($data['eidikotita'] == 'ergastiriako'){
+			$mail_applicant_position = 'Εργαστηριακό Προσωπικό -Βοηθοί και Επιστημονικοί Συνεργάτες';
+		}elseif($data['eidikotita'] == 'meta'){
+			$mail_applicant_position = 'Μεταπτυχιακός φοιτητής';
+		}elseif($data['eidikotita'] == 'dioikitiko'){
+			$mail_applicant_position = 'Διοικητικό Προσωπικό';
+		}
+
+		// Create the body of the email before looping over the "ellak" array.
+		$body = "
+Σας ευχαριστούμε για τη συμμετοχή σας, στέλνουμε για ενημέρωση τα στοιχεία
+που καταχωρίσατε στο ερωτηματολόγιο. Τα στοιχεία που καταχωρίσατε θα
+δημοσιευτούν σύντομα στο
+https://edu.ellak.gr/mitroo-anichton-technologion-stin-tritovathmia-ekpedefsi/.
+Στην ίδια σελίδα μπορείτε να δείτε όλες τις καταχωρίσεις.
+
+Στόχος του ερωτηματολογίου είναι να καταγραφούν όλα τα έργα ανοιχτού
+λογισμικού, ανοιχτών τεχνολογιών και περιεχομένου που χρησιμοποιούνται ή
+αναπτύσσονται στην τριτοβάθμια εκπαίδευση, για να δημιουργηθεί ένα μητρώο
+ανοιχτότητας που θα λειτουργήσει ως πλατφόρμα συνεργασίας και δημοσιότητας
+έργων και καλών πρακτικών στην ακαδημαϊκή-ερευνητική κοινότητα. Παράλληλα
+θα εμπλουτίζεται ο πίνακας ισοδυνάμων λογισμικών
+<https://mathe.ellak.gr/?page_id=135> ώστε να υπάρχει συνοπτική εικόνα για
+όλα τα ανοιχτά λογισμικά που μπορούν να χρησιμοποιηθούν στην εκπαιδευτική
+διαδικασία.
+
+Για ότι επιπλέον πληροφορίες ή/και προτάσεις μπορείτε να στείλετε
+ηλεκτρονικό ταχυδρομείο στο info@ellak.gr .
+
+
+Σας ευχαριστούμε,
+Η ομάδα υποστήριξης της ΕΕΛΛΑΚ.
+
+
+======================== Τα στοιχεία που καταχωρίσατε ======================
+
+Όνομα: ................... {$fields['edu_quest_applicant_name']}
+Επώνυμο: ................. {$fields['edu_quest_applicant_surname']}
+Email: ................... {$fields['edu_quest_applicant_email']}
+Ειδικότητα: .............. $mail_applicant_position\n
+Όνομα Εργαστηρίου: ....... {$fields['edu_quest_lab_name']}
+Δραστηριότητα Εργαστηρίου: {$fields['edu_quest_lab_activity']}
+Περιγραφή Εργαστηρίου: ... {$fields['edu_quest_lab_activity_description']}
+Υπεύθυνος Εργαστηρίου: ... {$fields['edu_quest_lab_head']}
+Ιστοσελίδα Εργαστηρίου: .. {$fields['edu_quest_lab_website']}\n
+Ίδρυμα: .................. {$fields['edu_quest_institution']}
+Τμήμα: ................... {$fields['edu_quest_department']}
+Τίτλος Μεταπτυχιακού: .... {$fields['edu_quest_graduate_title']}\n";
+
         	$stmt->execute();
 		$content = '<table><tr><td>ΙΔΡΥΜΑ</td><td>ΣΧΟΛΗ</td><td>ΜΑΘΗΜΑ</td><td>ΤΕΧΝΟΛΟΓΙΑ</td><td>URL</td><tr>';
 		$content .= "<tr><td>".$dget["idrima"];
@@ -155,6 +211,12 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
 					$fields['edu_quest_course']= $contentellakm;
 					$fields['edu_quest_software']= $contentellakt;
 					$fields['edu_quest_software_url']= $contentellaku;
+
+					// Add to the email body the course, sotfware and the software_url, within the loop.
+					$body .= "\nΜάθημα/Εργαστήριο: ....... {$fields['edu_quest_course']}\n";
+					$body .=   "Ανοιχτή Τεχνολογία: ...... {$fields['edu_quest_software']}\n";
+					$body .=   "Ιστοσελίδα Τεχνολογίας: .. {$fields['edu_quest_software_url']}\n";
+
 					$TITLOS = $dget["email"];
 
 					$data_json =  '{ "title": "'.$TITLOS.'", "status":"pending" }';
@@ -185,12 +247,13 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
 					$ii = $ii + 2;
 				}
 			}
-	$content .= '</table>';	
-	$body = $content;
+
 	$to = $dget["email"];
 	$from = $M_FROM;
 	$from_name = $M_NAME;
 	$subject = $M_SUBJECT;
+	// Add the footer to the email body.
+	$body .= "\n===================================================================";
 	smtpmailer($to, $from, $from_name, $subject, $body, $M_HOST, $M_PORT);
 
 	//result_messages===============================================================      

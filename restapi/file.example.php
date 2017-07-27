@@ -9,5 +9,6 @@ $endpoint2="http://example.com/wp-json/acf/v2/post";
  $M_STARTTLS="false";
  $M_FROM = "john@doe.com";
  $M_NAME = "John Doe";
+ $M_BCC = "john@foo.com";
  $M_SUBJECT = "Email Subject";
 
