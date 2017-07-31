@@ -179,6 +179,23 @@ tmimaselecturlmeta1 +='</div>';
 tmimaselecturlmeta1 +='</div>';
 
 
+tmimaselecturlmeta2 ='<div class="eltimagroupmeta1"><label class="eltmimalessonurl  control-label hidden-xs hidden-sm col-md-3" for="el-metamathima">Μάθημα/Εργαστήριο</label>';
+tmimaselecturlmeta2 +='<div class="eltmimalessonurldiv eltmimalessonurl col-xs-12 col-sm-12 col-md-9">';
+tmimaselecturlmeta2 +='<input class="form-control input-sm eltmimalesson eltmimalessonurl" value="" name="metamathima" placeholder="Μάθημα/Εργαστήριο" type="text">';
+tmimaselecturlmeta2 +='</div>';
+
+tmimaselecturlmeta2 +='<label class="eltmimalessonurl control-label required hidden-xs hidden-sm col-md-3" for="el-metatechnologia">Ανοιχτή Τεχνολογία</label>';
+tmimaselecturlmeta2 +='<div class="eltmimalessonurldiv eltmimalessonurl col-xs-12 col-sm-12 col-md-9">';
+tmimaselecturlmeta2 +='<input class="form-control input-sm eltmimalesson eltmimalessonurl" required value="" name="ellak" placeholder="Ανοιχτή Τεχνολογία/Λογισμικό/Περιεχόμενο" type="text">';
+tmimaselecturlmeta2 +='<input class="form-control input-sm eltmimalessonurl" value="" name="ellakurl" placeholder="Πληκτρολογήστε το url της Ανοιχτής Τεχνολογίας/Λογισμικού/Περιεχομένου που χρησιμοποιείτε" type="text">';
+tmimaselecturlmeta2 +='<button class="del_field_button" type="button" style="color:blue">Διαγραφή μαθήματος</button>';
+tmimaselecturlmeta2 +='<button class="add_field_button_url pull-right eltmimalessonurl" type="button" style="color:blue;">Προσθήκη τεχνολογίας</button>';
+tmimaselecturlmeta2 +='<div class="eltmimalessonurl" style="margin-top:5px"> &nbsp; </div>';
+tmimaselecturlmeta2 +='</div>';
+tmimaselecturlmeta2 +='</div>';
+tmimaselecturlmeta2 +='</div>';
+tmimaselecturlmeta2 +='</div>';
+
 
 tmimaerg =  '<p>Συμμετέχετε σε καποιο εργαστήριο/ερευνητική ομάδα στο ίδρυμα σας, που ασχολείται ή χρησιμοποιεί Ανοιχτές τεχνολογίες , Ανοιχτό λογισμικό ή περιεχόμενο?</p>';
 tmimaerg +=  '	<div class="row">';
@@ -264,6 +281,11 @@ $('#el-sxolh').on('change', function () {
 				$('#eltmhmalession').append(tmimaselecturlmeta);
 				$('#add_field_button').remove();
 				$('#eltmhmalessionadd').prepend(tmimaselect1);
+			}else if (unisxolh == 'ΟΛΑ ΤΑ ΤΜΗΜΑΤΑ'){
+				$('#eltmhmalession').empty();
+				$('#eltmhmalession').append(tmimaselecturlmeta2);
+				$('#add_field_button').remove();
+				$('#eltmhmalessionadd').prepend(tmimaselect1);
 			}else if (unitmp == 'i'){
 				$('#eltmhmalession').empty();
 				$('#eltmhmalession').append(tmimaselecturlmeta1);
@@ -312,6 +334,7 @@ $(document).on('click', '#add_field_button', function(){
     var add_button = $("#add_field_button"); //Add button ID
     var unival = $("#el-idrima option").filter(":selected").val();
     var unitmp = unival.substring(0,1);
+    var unisxolh = $("#el-sxolh option").filter(":selected").text();
     if(NEWSELECT == 'meta'){
     	$('#eltmhmalession').append(tmimaselecturlmeta);
 	var items = $('#eltmhmalession').find('.eltimagroupmeta').length;
@@ -319,8 +342,10 @@ $(document).on('click', '#add_field_button', function(){
 		$('#eltmhmalession').find('.eltimagroupmeta').last().find('.metalessonlabel').remove();	
 		$('#eltmhmalession').find('.eltimagroupmeta').last().find('.metalessoninput').remove();	
 	}
+    }else if (unisxolh == 'ΟΛΑ ΤΑ ΤΜΗΜΑΤΑ'){
+	$('#eltmhmalession').append(tmimaselecturlmeta2);
     }else if(unitmp == 'i'){
-    	$('#eltmhmalession').append(tmimaselecturlmeta1);
+	$('#eltmhmalession').append(tmimaselecturlmeta1);
     }else{
     	$('#eltmhmalession').append(tmimaselect);
     	getlessons();
