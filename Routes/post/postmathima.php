@@ -6,7 +6,7 @@
 $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_restapi){
 
 
-        function smtpmailer($to, $from, $from_name, $subject, $body, $M_HOST, $M_PORT) {
+        function smtpmailer($to, $from, $from_name, $subject, $body, $M_HOST, $M_PORT, $M_STARTTLS, $M_BCC) {
                 global $error;
                 $mail = new PHPMailer(); // create a new object
                 $mail->IsSMTP(); // enable SMTP
@@ -77,6 +77,8 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
    $M_FROM = $restapi['m_from'];
    $M_NAME  = $restapi['m_name'];
    $M_SUBJECT = $restapi['m_subject'];
+   $M_STARTTLS = $restapi['m_starttls'];
+   $M_BCC = $restapi['m_bcc'];
    
     try {
  		$g = 'INSERT INTO dataellak ( "onoma", "epitheto", "email", "eidikotita", "ergastirio", "ergastirioonoma", "ergastiriodrastiriotita", "ergastirioperigrafi", "ergastirioypefthinos", "ergastiriourl", "meta", "metatitlos", "idrima", "sxolh" ) VALUES ( :onoma, :epitheto, :email, :eidikotita, :ergastirio, :ergastirioonoma, :ergastiriodrastiriotita, :ergastirioperigrafi, :ergastirioypefthinos, :ergastiriourl, :meta, :metatitlos, :idrima, :sxolh)';
@@ -254,7 +256,7 @@ Email: ................... {$fields['edu_quest_applicant_email']}
 	$subject = $M_SUBJECT;
 	// Add the footer to the email body.
 	$body .= "\n===================================================================";
-	smtpmailer($to, $from, $from_name, $subject, $body, $M_HOST, $M_PORT);
+	smtpmailer($to, $from, $from_name, $subject, $body, $M_HOST, $M_PORT, $M_STARTTLS, $M_BCC);
 
 	//result_messages===============================================================      
         //$result["result"]=  $q;
