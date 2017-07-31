@@ -276,14 +276,14 @@ $('#el-sxolh').on('change', function () {
 		data:{"institution":department,"unisxolh":unisxolh},
 		dataType: 'json',
 		success: function (data, statusText, resObject) {
-			if(NEWSELECT == 'meta'){
-				$('#eltmhmalession').empty();
-				$('#eltmhmalession').append(tmimaselecturlmeta);
-				$('#add_field_button').remove();
-				$('#eltmhmalessionadd').prepend(tmimaselect1);
-			}else if (unisxolh == 'ΟΛΑ ΤΑ ΤΜΗΜΑΤΑ'){
+			if (unisxolh == 'ΟΛΑ ΤΑ ΤΜΗΜΑΤΑ'){
 				$('#eltmhmalession').empty();
 				$('#eltmhmalession').append(tmimaselecturlmeta2);
+				$('#add_field_button').remove();
+				$('#eltmhmalessionadd').prepend(tmimaselect1);
+			}else if(NEWSELECT == 'meta'){
+				$('#eltmhmalession').empty();
+				$('#eltmhmalession').append(tmimaselecturlmeta);
 				$('#add_field_button').remove();
 				$('#eltmhmalessionadd').prepend(tmimaselect1);
 			}else if (unitmp == 'i'){
@@ -335,15 +335,15 @@ $(document).on('click', '#add_field_button', function(){
     var unival = $("#el-idrima option").filter(":selected").val();
     var unitmp = unival.substring(0,1);
     var unisxolh = $("#el-sxolh option").filter(":selected").text();
-    if(NEWSELECT == 'meta'){
+    if (unisxolh == 'ΟΛΑ ΤΑ ΤΜΗΜΑΤΑ'){
+	$('#eltmhmalession').append(tmimaselecturlmeta2);
+    }else if(NEWSELECT == 'meta'){
     	$('#eltmhmalession').append(tmimaselecturlmeta);
 	var items = $('#eltmhmalession').find('.eltimagroupmeta').length;
 	if(items > 1){
 		$('#eltmhmalession').find('.eltimagroupmeta').last().find('.metalessonlabel').remove();	
 		$('#eltmhmalession').find('.eltimagroupmeta').last().find('.metalessoninput').remove();	
 	}
-    }else if (unisxolh == 'ΟΛΑ ΤΑ ΤΜΗΜΑΤΑ'){
-	$('#eltmhmalession').append(tmimaselecturlmeta2);
     }else if(unitmp == 'i'){
 	$('#eltmhmalession').append(tmimaselecturlmeta1);
     }else{
