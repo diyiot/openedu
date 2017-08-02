@@ -42,6 +42,8 @@ diyConfig::write('m_name', $M_NAME);
 diyConfig::write('m_subject', $M_SUBJECT);
 diyConfig::write('m_starttls', $M_STARTTLS);
 diyConfig::write('m_bcc', $M_BCC);
+
+diyConfig::write('post_log_path', $POST_LOG_PATH);
 //=========================  REQUIRE ==================================
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
@@ -98,6 +100,7 @@ $diy_restapi = function()
 	$restapi['m_subject'] = diyConfig::read('m_subject');
 	$restapi['m_starttls'] = diyConfig::read('m_starttls');
 	$restapi['m_bcc'] = diyConfig::read('m_bcc');
+	$restapi['post_log_path'] = diyConfig::read('post_log_path');
 	return $restapi;
 };
 

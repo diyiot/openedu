@@ -79,6 +79,8 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
    $M_SUBJECT = $restapi['m_subject'];
    $M_STARTTLS = $restapi['m_starttls'];
    $M_BCC = $restapi['m_bcc'];
+
+   $POST_LOG_PATH = $restapi['post_log_path'];
    
     try {
  		$g = 'INSERT INTO dataellak ( "onoma", "epitheto", "email", "eidikotita", "ergastirio", "ergastirioonoma", "ergastiriodrastiriotita", "ergastirioperigrafi", "ergastirioypefthinos", "ergastiriourl", "meta", "metatitlos", "idrima", "sxolh" ) VALUES ( :onoma, :epitheto, :email, :eidikotita, :ergastirio, :ergastirioonoma, :ergastiriodrastiriotita, :ergastirioperigrafi, :ergastirioypefthinos, :ergastiriourl, :meta, :metatitlos, :idrima, :sxolh)';
@@ -214,6 +216,18 @@ Email: ................... {$fields['edu_quest_applicant_email']}
 					exec($exec, $output, $return_var);
 					$obj = json_decode($output[0]);
 
+					// Optional exit code check of curl command
+					//if ($return_var != 0) {
+					  error_log(date("F j, Y, g:i a e O").PHP_EOL, 3, '/tmp/php_err.log');
+					  if (isset($obj)) {
+					    // Log the result of the POST request to file, if logging to webserver
+					    // log file the json object gets truncated thus logging only a few lines
+					    error_log(print_r($obj, TRUE), 3, $POST_LOG_PATH);
+					  }else {
+					    error_log(print_r($output, TRUE), 3, $POST_LOG_PATH);
+					  }
+					//}
+
 					$fields1['fields']=$fields;
 					$content1 = json_encode($fields1);
 					$exec1 = 'curl -s -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint2.'/'.$obj->{'id'}.' -d '."'".$content1."'";
@@ -221,10 +235,21 @@ Email: ................... {$fields['edu_quest_applicant_email']}
 					$exec1 .= " 2>&1";
 					exec($exec1, $output1, $return_var1);
 
+					//if ($return_var1 != 0) {
+					  $obj1 = json_decode($output1[0]);
+					  error_log(date("F j, Y, g:i a e O").PHP_EOL, 3, '/tmp/php_err.log');
+					  if (isset($obj1)) {
+					    error_log(print_r($obj1, TRUE), 3, $POST_LOG_PATH);
+					  }else {
+					    error_log(print_r($output1, TRUE), 3, $POST_LOG_PATH);
+					  }
+					//}
+
 					$contentellakm='';
 					$contentellakt='';
 					$contentellaku='';
 					$output='';
+					$output1='';
 					$stmt1->execute();
 					$ii = $ii + 2;
 				}

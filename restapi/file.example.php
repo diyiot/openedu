@@ -12,3 +12,4 @@ $endpoint2="http://example.com/wp-json/acf/v2/post";
  $M_BCC = "john@foo.com";
  $M_SUBJECT = "Email Subject";
 
+ $POST_LOG_PATH = '/absolute/path/to/log/file.log';
