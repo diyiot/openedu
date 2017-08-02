@@ -208,16 +208,19 @@ Email: ................... {$fields['edu_quest_applicant_email']}
 					$TITLOS = $dget["email"];
 
 					$data_json =  '{ "title": "'.$TITLOS.'", "status":"pending" }';
-					$exec = 'curl -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint.' -d '."'".$data_json."'";
+					$exec = 'curl -s -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint.' -d '."'".$data_json."'";
 
-					$exec .= " | jq '.id' 2>&1";
+					$exec .= " 2>&1";
 					exec($exec, $output, $return_var);
+					$obj = json_decode($output[0]);
+
 					$fields1['fields']=$fields;
 					$content1 = json_encode($fields1);
-					$exec1 = 'curl -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint2.'/'.$output[0].' -d '."'".$content1."'";
+					$exec1 = 'curl -s -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint2.'/'.$obj->{'id'}.' -d '."'".$content1."'";
 
 					$exec1 .= " 2>&1";
 					exec($exec1, $output1, $return_var1);
+
 					$contentellakm='';
 					$contentellakt='';
 					$contentellaku='';
