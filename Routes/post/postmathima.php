@@ -219,7 +219,7 @@ Email: ................... {$fields['edu_quest_applicant_email']}
 					// Optional exit code check of curl command
 					//if ($return_var != 0) {
 					  error_log(date("F j, Y, g:i a e O").PHP_EOL, 3, $POST_LOG_PATH);
-					  if (isset($obj)) {
+					  if (isset($obj->{'id'})) {
 					    // Log the result of the POST request to file, if logging to webserver
 					    // log file the json object gets truncated thus logging only a few lines
 					    error_log(print_r($obj, TRUE), 3, $POST_LOG_PATH);
@@ -238,7 +238,7 @@ Email: ................... {$fields['edu_quest_applicant_email']}
 					//if ($return_var1 != 0) {
 					  $obj1 = json_decode($output1[0]);
 					  error_log(date("F j, Y, g:i a e O").PHP_EOL, 3, $POST_LOG_PATH);
-					  if (isset($obj1)) {
+					  if (isset($obj1->{'acf'}->{'edu_quest_applicant_email'})) {
 					    error_log(print_r($obj1, TRUE), 3, $POST_LOG_PATH);
 					  }else {
 					    error_log(print_r($output1, TRUE), 3, $POST_LOG_PATH);
