@@ -210,7 +210,7 @@ Email: ................... ".$dget["email"]."
 					$TITLOS = $dget["email"];
 
 					$data_json =  '{ "title": "'.$TITLOS.'", "status":"pending" }';
-					$exec = 'curl -s -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint.' -d '."'".$data_json."'";
+					$exec = 'curl -sS -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint.' -d '."'".$data_json."'";
 
 					$exec .= " 2>&1";
 					exec($exec, $output, $return_var);
@@ -230,7 +230,7 @@ Email: ................... ".$dget["email"]."
 
 					$fields1['fields']=$fields;
 					$content1 = json_encode($fields1);
-					$exec1 = 'curl -s -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint2.'/'.$obj->{'id'}.' -d '."'".$content1."'";
+					$exec1 = 'curl -sS -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint2.'/'.$obj->{'id'}.' -d '."'".$content1."'";
 
 					$exec1 .= " 2>&1";
 					exec($exec1, $output1, $return_var1);
