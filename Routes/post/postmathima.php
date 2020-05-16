@@ -6,7 +6,7 @@
 $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_restapi){
 
 
-        function smtpmailer($to, $from, $from_name, $subject, $body, $M_HOST, $M_PORT) {
+        function smtpmailer($to, $from, $from_name, $subject, $body, $M_HOST, $M_PORT, $M_STARTTLS, $M_BCC) {
                 global $error;
                 $mail = new PHPMailer(); // create a new object
                 $mail->IsSMTP(); // enable SMTP
@@ -77,6 +77,10 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
    $M_FROM = $restapi['m_from'];
    $M_NAME  = $restapi['m_name'];
    $M_SUBJECT = $restapi['m_subject'];
+   $M_STARTTLS = $restapi['m_starttls'];
+   $M_BCC = $restapi['m_bcc'];
+
+   $POST_LOG_PATH = $restapi['post_log_path'];
    
     try {
  		$g = 'INSERT INTO dataellak ( "onoma", "epitheto", "email", "eidikotita", "ergastirio", "ergastirioonoma", "ergastiriodrastiriotita", "ergastirioperigrafi", "ergastirioypefthinos", "ergastiriourl", "meta", "metatitlos", "idrima", "sxolh" ) VALUES ( :onoma, :epitheto, :email, :eidikotita, :ergastirio, :ergastirioonoma, :ergastiriodrastiriotita, :ergastirioperigrafi, :ergastirioypefthinos, :ergastiriourl, :meta, :metatitlos, :idrima, :sxolh)';
@@ -97,18 +101,18 @@ $app->post('/mathima', function($request, $response) use ($diy_storage, $diy_res
 		$stmt->bindValue(':idrima', $dget["idrima"]);
 		$stmt->bindValue(':sxolh', $dget["sxolh"]);
 
-		$fields['edu_quest_applicant_name']= $dget["onoma"];
-		$fields['edu_quest_applicant_surname']= $dget["epitheto"];
-		$fields['edu_quest_applicant_email']= $dget["email"];
-		$fields['edu_quest_applicant_position']= $dget["eidikotita"];
-		$fields['edu_quest_lab_name']=$dget["ergastirioonoma"];
-		$fields['edu_quest_lab_activity']= $dget["ergastiriodrastiriotita"];
-		$fields['edu_quest_lab_activity_description']= $dget["ergastirioperigrafi"];
-		$fields['edu_quest_lab_head']= $dget["ergastirioypefthinos"];
-		$fields['edu_quest_lab_website']= $dget["ergastiriourl"];
-		$fields['edu_quest_institution']=$dget["idrima"];
-		$fields['edu_quest_department']=$dget["sxolh"];
-		$fields['edu_quest_graduate_title']=$dget["metatitlos"];
+		$fields['edu_quest_applicant_name']= htmlspecialchars($dget["onoma"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_applicant_surname']= htmlspecialchars($dget["epitheto"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_applicant_email']= htmlspecialchars($dget["email"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_applicant_position']= htmlspecialchars($dget["eidikotita"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_lab_name']=htmlspecialchars($dget["ergastirioonoma"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_lab_activity']= htmlspecialchars($dget["ergastiriodrastiriotita"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_lab_activity_description']= htmlspecialchars($dget["ergastirioperigrafi"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_lab_head']= htmlspecialchars($dget["ergastirioypefthinos"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_lab_website']= htmlspecialchars($dget["ergastiriourl"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_institution']=htmlspecialchars($dget["idrima"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_department']=htmlspecialchars($dget["sxolh"], ENT_QUOTES, "UTF-8");
+		$fields['edu_quest_graduate_title']=htmlspecialchars($dget["metatitlos"], ENT_QUOTES, "UTF-8");
 
 		// Check and replace eidikotita vlaues with human friendly names
 		if($data['eidikotita'] == 'didaktiko'){
@@ -151,25 +155,21 @@ https://edu.ellak.gr/mitroo-anichton-technologion-stin-tritovathmia-ekpedefsi/.
 
 ======================== Τα στοιχεία που καταχωρίσατε ======================
 
-Όνομα: ................... {$fields['edu_quest_applicant_name']}
-Επώνυμο: ................. {$fields['edu_quest_applicant_surname']}
-Email: ................... {$fields['edu_quest_applicant_email']}
+Όνομα: ................... ".$dget["onoma"]."
+Επώνυμο: ................. ".$dget["epitheto"]."
+Email: ................... ".$dget["email"]."
 Ειδικότητα: .............. $mail_applicant_position\n
-Όνομα Εργαστηρίου: ....... {$fields['edu_quest_lab_name']}
-Δραστηριότητα Εργαστηρίου: {$fields['edu_quest_lab_activity']}
-Περιγραφή Εργαστηρίου: ... {$fields['edu_quest_lab_activity_description']}
-Υπεύθυνος Εργαστηρίου: ... {$fields['edu_quest_lab_head']}
-Ιστοσελίδα Εργαστηρίου: .. {$fields['edu_quest_lab_website']}\n
-Ίδρυμα: .................. {$fields['edu_quest_institution']}
-Τμήμα: ................... {$fields['edu_quest_department']}
-Τίτλος Μεταπτυχιακού: .... {$fields['edu_quest_graduate_title']}\n";
+Όνομα Εργαστηρίου: ....... ".$dget["ergastirioonoma"]."
+Δραστηριότητα Εργαστηρίου: ".$dget["ergastiriodrastiriotita"]."
+Περιγραφή Εργαστηρίου: ... ".$dget["ergastirioperigrafi"]."
+Υπεύθυνος Εργαστηρίου: ... ".$dget["ergastirioypefthinos"]."
+Ιστοσελίδα Εργαστηρίου: .. ".$dget["ergastiriourl"]."\n
+Ίδρυμα: .................. ".$dget["idrima"]."
+Τμήμα: ................... ".$dget["sxolh"]."
+Τίτλος Μεταπτυχιακού: .... ".$dget["metatitlos"]."\n";
 
         	$stmt->execute();
-		$content = '<table><tr><td>ΙΔΡΥΜΑ</td><td>ΣΧΟΛΗ</td><td>ΜΑΘΗΜΑ</td><td>ΤΕΧΝΟΛΟΓΙΑ</td><td>URL</td><tr>';
-		$content .= "<tr><td>".$dget["idrima"];
-		$content .= "</td><td>";
-		$content .= $dget["sxolh"];
-		$content .= "</td>";
+
         	$lastid = $storage->lastInsertId();
 		if($data['eidikotita'] == 'didaktiko' || $data['eidikotita'] == 'fititis' || $data['eidikotita'] == 'ergastiriako'){
 			$g1 = 'INSERT INTO datamathima ( "id", "mathima", "ellak", "ellakurl" ) VALUES ( :lastid, :mathima, :ellak, :ellakurl)';
@@ -188,61 +188,68 @@ Email: ................... {$fields['edu_quest_applicant_email']}
 					}else{
 						$stmt1->bindValue(':mathima', $dget["ellak"][$i]["mathima"]);
 						$contentellakm = $dget["ellak"][$i]["mathima"];
-						$contentellakme = "<td>";
-						$contentellakme .= $dget["ellak"][$i]["mathima"];
-+						$contentellakme .= "</td>";
 					}
 					if($dget["ellak"][$i]["tech"] != ''){
 						$stmt1->bindValue(':ellak', $dget["ellak"][$i]["tech"]);
 						$contentellakt = $dget["ellak"][$i]["tech"];
-						$contentellakte = "<td>";
-						$contentellakte .= $dget["ellak"][$i]["tech"];
-						$contentellakte .= "</td>";
 					}
 					elseif($dget["ellak"][$i]["url"] != ''){
 						$stmt1->bindValue(':ellakurl', $dget["ellak"][$i]["url"]);
 						$contentellaku = $dget["ellak"][$i]["url"];
-						$contentellakue = "<td>";
-						$contentellakue .= $dget["ellak"][$i]["url"];
-						$contentellakue .= "</td>";
-						$contentellakue .= "</tr>";
 					}
 				if($i == $ii){
-					$fields['edu_quest_course']= $contentellakm;
-					$fields['edu_quest_software']= $contentellakt;
-					$fields['edu_quest_software_url']= $contentellaku;
+					$fields['edu_quest_course']= htmlspecialchars($contentellakm, ENT_QUOTES, "UTF-8");
+					$fields['edu_quest_software']= htmlspecialchars($contentellakt, ENT_QUOTES, "UTF-8");
+					$fields['edu_quest_software_url']= htmlspecialchars($contentellaku, ENT_QUOTES, "UTF-8");
 
 					// Add to the email body the course, sotfware and the software_url, within the loop.
-					$body .= "\nΜάθημα/Εργαστήριο: ....... {$fields['edu_quest_course']}\n";
-					$body .=   "Ανοιχτή Τεχνολογία: ...... {$fields['edu_quest_software']}\n";
-					$body .=   "Ιστοσελίδα Τεχνολογίας: .. {$fields['edu_quest_software_url']}\n";
+					$body .= "\nΜάθημα/Εργαστήριο: ....... $contentellakm\n";
+					$body .=   "Ανοιχτή Τεχνολογία: ...... $contentellakt\n";
+					$body .=   "Ιστοσελίδα Τεχνολογίας: .. $contentellaku\n";
 
 					$TITLOS = $dget["email"];
 
 					$data_json =  '{ "title": "'.$TITLOS.'", "status":"pending" }';
-					$exec = 'curl -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint.' -d '."'".$data_json."'";
+					$exec = 'curl -sS -k --connect-timeout 30 --max-time 120 --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint.' -d '."'".$data_json."'";
 
-					$exec .= " | jq '.id' 2>&1";
+					$exec .= " 2>&1";
 					exec($exec, $output, $return_var);
+					$obj = json_decode($output[0]);
+
+					// Optional exit code check of curl command
+					//if ($return_var != 0) {
+					  error_log(date("F j, Y, g:i a e O").PHP_EOL, 3, $POST_LOG_PATH);
+					  if (isset($obj->{'id'})) {
+					    // Log the result of the POST request to file, if logging to webserver
+					    // log file the json object gets truncated thus logging only a few lines
+					    error_log(print_r($obj, TRUE), 3, $POST_LOG_PATH);
+					  }else {
+					    error_log(print_r($output, TRUE), 3, $POST_LOG_PATH);
+					  }
+					//}
+
 					$fields1['fields']=$fields;
 					$content1 = json_encode($fields1);
-					$exec1 = 'curl -k --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint2.'/'.$output[0].' -d '."'".$content1."'";
+					$exec1 = 'curl -sS -k --connect-timeout 30 --max-time 120 --header "Authorization: Basic '.$restapitmp.'" -H "Content-Type: application/json" -X POST  '.$restapipoint2.'/'.$obj->{'id'}.' -d '."'".$content1."'";
 
 					$exec1 .= " 2>&1";
 					exec($exec1, $output1, $return_var1);
 
-					$content .= $contentellakme;
- 					$content .= $contentellakte;
- 					$content .= $contentellakue;
-					$content .= '<td></td><td></td>';
- 					$contentellakme='';
- 					$contentellakte='';
- 					$contentellakue='';
+					//if ($return_var1 != 0) {
+					  $obj1 = json_decode($output1[0]);
+					  error_log(date("F j, Y, g:i a e O").PHP_EOL, 3, $POST_LOG_PATH);
+					  if (isset($obj1->{'acf'}->{'edu_quest_applicant_email'})) {
+					    error_log(print_r($obj1, TRUE), 3, $POST_LOG_PATH);
+					  }else {
+					    error_log(print_r($output1, TRUE), 3, $POST_LOG_PATH);
+					  }
+					//}
 
 					$contentellakm='';
 					$contentellakt='';
 					$contentellaku='';
 					$output='';
+					$output1='';
 					$stmt1->execute();
 					$ii = $ii + 2;
 				}
@@ -254,7 +261,7 @@ Email: ................... {$fields['edu_quest_applicant_email']}
 	$subject = $M_SUBJECT;
 	// Add the footer to the email body.
 	$body .= "\n===================================================================";
-	smtpmailer($to, $from, $from_name, $subject, $body, $M_HOST, $M_PORT);
+	smtpmailer($to, $from, $from_name, $subject, $body, $M_HOST, $M_PORT, $M_STARTTLS, $M_BCC);
 
 	//result_messages===============================================================      
         //$result["result"]=  $q;
